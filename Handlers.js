@@ -77,6 +77,17 @@ function getPrefix () {
   return DINNER_MESSAGE_PREFIXES[i]
 }
 
+function getSpeachOutput (placeName) {
+  const speech = new Speech()
+  speech.say(getPrefix() + placeName)
+  return speech.ssml(true)
+}
+
+function getPlaceName (places) {
+  const placeIndex = Math.floor(Math.random() * places.length)
+  return places[placeIndex].name
+}
+
 function handleQueryResults (response) {
   const places = response.search.business
 
@@ -85,13 +96,9 @@ function handleQueryResults (response) {
     return
   }
 
-  const placeIndex = Math.floor(Math.random() * places.length)
-  const place = places[placeIndex].name
-  const speech = new Speech()
-
-  speech.say(getPrefix() + place)
-  const speechOutput = speech.ssml(true)
-  this.emit(':tellWithCard', speechOutput, SKILL_NAME, place)
+  const placeName = getPlaceName(places)
+  const speechOutput = getSpeachOutput(placeName)
+  this.emit(':tellWithCard', speechOutput, SKILL_NAME, placeName)
 }
 
 function GetDinnerIntent () {
