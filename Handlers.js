@@ -105,7 +105,7 @@ function GetDinnerIntent () {
   }
 
   addressClient.getCountryAndPostalCode()
-    .then(handleAddressResponse)
+    .then(handleAddressResponse.bind(this))
     .then(postalCode => query(postalCode, yelpClient))
     .then(handleQueryResults.bind(this))
     .catch(e => {
